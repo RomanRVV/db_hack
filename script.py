@@ -23,7 +23,6 @@ def fix_marks(schoolkid_name):
     for bad_mark in bad_marks:
         bad_mark.points = 5
         bad_mark.save()
-        bad_marks.save()
 
 
 def remove_chastisements(schoolkid_name):
@@ -64,16 +63,16 @@ def create_commendation(schoolkid_name, subject):
                      "Ты многое сделал, я это вижу!",
                      "Теперь у тебя точно все получится!"
                      ]
-    try:
-        lesson = Lesson.objects.filter(year_of_study=schoolkid.year_of_study,
-                                       group_letter=schoolkid.group_letter,
-                                       subject__title=subject).order_by("?").first().get()
-    except ObjectDoesNotExist:
-        print("Вы неправильно ввели название предмета")
-        sys.exit()
+    lesson = Lesson.objects.filter(year_of_study=schoolkid.year_of_study,
+                                   group_letter=schoolkid.group_letter,
+                                   subject__title=subject).order_by("?").first()
     commendation = random.choice(commendations)
-    Commendation.objects.create(text=commendation,
-                                created=lesson.date,
-                                schoolkid=schoolkid,
-                                subject=lesson.subject,
-                                teacher=lesson.teacher)
+    if lesson:
+        Commendation.objects.create(text=commendation,
+                                    created=lesson.date,
+                                    schoolkid=schoolkid,
+                                    subject=lesson.subject,
+                                    teacher=lesson.teacher)
+    else:
+        print(f'Предмета {subject} нет в дневнике.\nПроверьте правильность написания предмета')
+        sys.exit()
