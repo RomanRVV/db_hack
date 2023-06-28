@@ -26,7 +26,7 @@ python manage.py shell
 
 Далее импортируйте скрипт командой
 ```sh
-import script
+from script import (fix_marks, remove_chastisements, create_commendation)
 ```
 
 ### Как пользоваться скриптом
