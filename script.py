@@ -1,6 +1,5 @@
 from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
                                Schoolkid)
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 import random
 import sys
 
@@ -9,10 +8,10 @@ def find_schoolkid(schoolkid_name):
     try:
         schoolkid = Schoolkid.objects.filter(full_name__contains=schoolkid_name).get()
         return schoolkid
-    except MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print(f'С именем {schoolkid_name}, есть сразу несколько учеников, пожалуйста, укажите полное ФИО')
         sys.exit()
-    except ObjectDoesNotExist:
+    except Schoolkid.DoesNotExist:
         print('Такого ФИО нет в базе данных')
         sys.exit()
 
